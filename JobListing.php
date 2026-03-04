@@ -55,6 +55,19 @@
     // }
 
     $formatSalary = fn ($Salary) => '$' . number_format($Salary);
+
+    function filterByLocation($listings, $location){
+        return array_filter($listings, function($job) use ($location){
+            return strcasecmp($job['location'], $location) === 0;
+        });
+    }
+
+    if (isset($_GET['location'])){
+        $location = $_GET['location'];
+        $filteredlist = filterByLocation($listings, $location);
+    }else {
+        $filteredlist = $listings;
+    }
    
 
 ?>
@@ -89,7 +102,7 @@
     <title>Job Listings</title>
 </head>
 <body class="bg-gray-200">
-    <header class="bg-green-500 text-white p-4">
+    <header class="bg-blue-500 text-white p-4">
         <div class="container mx-auto">
             <h1 class="text-3xl font-semibold font-display">Job Listings</h1>
         </div>
@@ -97,7 +110,7 @@
 
     <div class="container mx-auto p-4 mt-4">
         <!-- output -->
-        <?php foreach ($listings as $index => $job): ?>
+        <?php foreach ($filteredlist as $index => $job): ?>
             <div class="my-4">
                 <div class="
                 <?php if ($index % 2 == 0): ?>
